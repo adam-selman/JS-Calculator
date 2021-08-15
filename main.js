@@ -1,5 +1,3 @@
-// Author: Adam Selman
-// contact: adamselman212@gmail.com
 
 var decimalUsed = false; // used to track if a deciaml has been used for the current number being inputted
 var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]; // valid numbers
