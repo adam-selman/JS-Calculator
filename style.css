@@ -26,6 +26,11 @@ header{
     width: 75%;
     height: 100%;
     margin: 0 12%;
+
+    padding: 1%;
+    border: 1px solid #aaa ;
+    border-radius: 8px;
+    background-color: #aaa;
     
     
 }
