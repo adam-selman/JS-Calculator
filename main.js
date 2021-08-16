@@ -129,11 +129,19 @@ function onButtonClick(e)
                         break;
                     }
                 }
+            
 
             else if (numbers.indexOf(calcTextValue.slice(-1)) === -1) // if the last char is not a number
             {
 
-                errorMessage = "Number or needed before closing bracket";
+                errorMessage = "Number needed before closing bracket";
+                setErrorMessage(errorMessage);
+                break;
+            }
+
+            else if (numberOpeningBrackets === 0)
+            {
+                errorMessage = "Must have an opening bracket first";
                 setErrorMessage(errorMessage);
                 break;
             }
@@ -154,8 +162,8 @@ function onButtonClick(e)
 
             else if (symbols.indexOf(calcText[0].innerText.slice(-1)) !== -1) // deciamal can't follow an operator
             {
-                console.log(symbols.indexOf(calcText[0].innerText.slice(-1))); // if the character before last is an operator - debug
-                console.log(calcText[0].innerText.slice(-1)); // debug 
+                // console.log(symbols.indexOf(calcText[0].innerText.slice(-1))); // if the character before last is an operator - debug
+                // console.log(calcText[0].innerText.slice(-1)); // debug 
                 errorMessage = "Decimals can't follow operators";
             
                 setErrorMessage(errorMessage);
@@ -251,7 +259,7 @@ function parseCalcString(string)  // splits the calculation into individual comp
 
         if (symbols.indexOf(currentChar) !== -1) // if the current char is an operator
         { 
-            console.log("Operator Found"); // debug   
+            // console.log("Operator Found"); // debug   
             currentString = parseFloat(currentString);  // convert to number
             
             strings.push(currentString); // add the number before the operator to array
@@ -275,8 +283,8 @@ function parseCalcString(string)  // splits the calculation into individual comp
 
             if (currentChar == "(")
             {
-                console.log("Opening Bracket Found"); // debug  
-                console.log("Entering Bracket string loop"); // debug
+                // console.log("Opening Bracket Found"); // debug  
+                // console.log("Entering Bracket string loop"); // debug
                 while (true)
                 {
                     currentBracket = currentBracket + string[j];
@@ -295,22 +303,22 @@ function parseCalcString(string)  // splits the calculation into individual comp
                     }
                     
                 }
-                console.log("exiting Bracket string loop"); // debug
+                // console.log("exiting Bracket string loop"); // debug
                 
 
-                console.log("-- Calculating bracket result --");
+                // console.log("-- Calculating bracket result --"); // debug
                 let bracketEvaulation = calculateResult(currentBracket, "no");  // calculate result for equation in brackets
 
-                console.log(` bracketEvaluation Result: ${bracketEvaulation}`); // debug
+                // console.log(` bracketEvaluation Result: ${bracketEvaulation}`); // debug
 
                 preBracket = string.slice(0,i - 1);  // get what was before the bracket
-                console.log(`preBracket: ${preBracket}`); // debug
+                // console.log(`preBracket: ${preBracket}`); // debug
 
                 postBracket = string.slice(j + 1, j + 2); // get what was after the bracket
-                console.log(`postBracket: ${postBracket}`); // debug
+                // console.log(`postBracket: ${postBracket}`); // debug
 
                 newString = preBracket + bracketEvaulation + postBracket; // recreate the string with the bracket now solved
-                console.log(`newString: ${newString}`); // debug
+                // console.log(`newString: ${newString}`); // debug
                 
 
 
@@ -330,7 +338,7 @@ function parseCalcString(string)  // splits the calculation into individual comp
 
             else
             {
-                console.log("closing Bracket Found"); // debug  
+                // console.log("closing Bracket Found"); // debug  
 
             }
 
@@ -340,11 +348,11 @@ function parseCalcString(string)  // splits the calculation into individual comp
                 
         else  // if its a numerical char or decimal
         {
-            console.log("typeof currentChar:" + typeof(currentChar));
+            // console.log("typeof currentChar:" + typeof(currentChar)); // debug 
             if (numbers.indexOf(currentChar) !== -1 || currentChar === ".")
             {
                 currentString = currentString + currentChar;  // add number to the current number in the string
-                console.log(`Added ${currentChar} to currentString`); // debug
+                // console.log(`Added ${currentChar} to currentString`); // debug
                 // console.log('currentString:' + currentString); // debug
             }
         }
@@ -376,7 +384,7 @@ function calculateResult(equation, final="yes")
     }
     
 
-    console.log(`sections array: ${sections}`);  //debug
+    // console.log(`sections array: ${sections}`);  //debug
 
     let result = parseFloat(sections[0]);  // base number for the calcualtion is the first number
     let newString = "";
@@ -386,16 +394,16 @@ function calculateResult(equation, final="yes")
 
         for (currentSection = 0; currentSection < sections.length; currentSection++)
         {
-            console.log(`currentSection: ${sections[currentSection]}`); // debug
+            // console.log(`currentSection: ${sections[currentSection]}`); // debug
 
 
             if (i === 0)  // looking for "/"
             {
 
-                if (sections[currentSection] === "/") 
+                if (sections[currentSection] === "/") // once found, calculation is done in place
                 {
 
-                    console.log("/ found"); // once found, calculation is done in place
+                    // console.log("/ found"); // debug
 
                     newString = parseFloat(sections[currentSection - 1]) / parseFloat(sections[currentSection + 1]); 
 
@@ -413,7 +421,7 @@ function calculateResult(equation, final="yes")
 
                 if (sections[currentSection] === "*")
                 {
-                    console.log("* found");
+                    // console.log("* found"); // debug
 
                     newString = parseFloat(sections[currentSection - 1]) * parseFloat(sections[currentSection + 1]);
 
@@ -431,7 +439,7 @@ function calculateResult(equation, final="yes")
 
                 if (sections[currentSection] === "+")
                 {
-                    console.log("+ found");
+                    // console.log("+ found"); // debug
 
                     newString = parseFloat(sections[currentSection - 1]) + parseFloat(sections[currentSection + 1]);
 
@@ -448,7 +456,7 @@ function calculateResult(equation, final="yes")
 
                 if (sections[currentSection] === "-")
                 {
-                    console.log("- found");
+                    // console.log("- found"); // debug
 
                     newString = parseFloat(sections[currentSection - 1]) - parseFloat(sections[currentSection + 1]);
 
