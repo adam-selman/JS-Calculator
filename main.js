@@ -3,6 +3,7 @@ var decimalUsed = false; // used to track if a deciaml has been used for the cur
 var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]; // valid numbers
 var symbols = ["+", "-", "*", "/"];  // array of all operators
 var parenthesis = ["(", ")"];
+var numberOpeningBrackets = 0; // tracking how many opening brackets have been found
 
 
 let calcText = document.querySelectorAll(".calcText");
@@ -98,19 +99,46 @@ function onButtonClick(e)
                 break;
             }
 
+            else if (numbers.indexOf(calcTextValue.slice(-1)) !== -1)
+            {
+                errorMessage = "Opening bracket must follow an operator";
+                setErrorMessage(errorMessage);
+                break;
+            }
+
+            else if (calcTextValue.slice(-1) === ".")
+            {
+                errorMessage = "Opening bracket can't follow an unfinished decimal";
+                setErrorMessage(errorMessage);
+                break;
+            }
+
             decimalUsed = false; // new number is after a bracket so new deciaml can be used
+            numberOpeningBrackets++;
         }
 
 
         else if (newCharValue === ")")
         {
-            if(numbers.indexOf(calcTextValue.slice(-1)) === -1) // if the last char is not a number
+            if (numberOpeningBrackets > 0) // if there is a bracket pair to be closed
+                {
+                    if (symbols.indexOf(calcTextValue.slice(-1)) !== -1) // if the previous char isn't an operator
+                    {
+                        errorMessage = "Can't have a bracket follow an operator";
+                        setErrorMessage(errorMessage);
+                        break;
+                    }
+                }
+
+            else if (numbers.indexOf(calcTextValue.slice(-1)) === -1) // if the last char is not a number
             {
+
                 errorMessage = "Number or needed before closing bracket";
                 setErrorMessage(errorMessage);
                 break;
             }
 
+            numberOpeningBrackets--;
             decimalUsed = false; // new number is after a bracket so new deciaml can be used
         }
 
@@ -159,6 +187,9 @@ function resetCalc(e)  // resetting the calculator screen to blank
         console.log('calcText reset');
     }
     console.clear(); // clean console for each calculation
+    decimalUsed = false;
+    numberOpeningBrackets = 0;
+    resetErrorMessage();
 }
 
 
@@ -202,7 +233,7 @@ function setCalcTextValue(newTextValue)
 // ---------------------------------------------------------------------------------------------------------------
 function parseCalcString(string)  // splits the calculation into individual components
 {
-    console.log(`Current calcText: ${string}`); // debug
+    // console.log(`Current calcText: ${string}`); // debug
 
     if (symbols.indexOf(string.slice(-1)) !== -1)  // if there is a trailing symbol remove it
     {
@@ -309,10 +340,13 @@ function parseCalcString(string)  // splits the calculation into individual comp
                 
         else  // if its a numerical char or decimal
         {
-            currentString = currentString + currentChar;  // add number to the current number in the string
-            console.log(`Added ${currentChar} to currentString`); // debug
-            // console.log('currentString:' + currentString); // debug
-            
+            console.log("typeof currentChar:" + typeof(currentChar));
+            if (numbers.indexOf(currentChar) !== -1 || currentChar === ".")
+            {
+                currentString = currentString + currentChar;  // add number to the current number in the string
+                console.log(`Added ${currentChar} to currentString`); // debug
+                // console.log('currentString:' + currentString); // debug
+            }
         }
     }
 
