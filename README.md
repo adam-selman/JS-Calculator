@@ -1,4 +1,4 @@
-# JS-Calculator
+# JS-Calculator - MIGRATED TO "adam-selman"
 A calculator that can do simple arithmetic with brackets incorporates the correct order of operations.
 
 I used this project to help my practice my JavaScript and learn how to manipulate strings and perfrom calculations and have them displayed in the browser for the user.
